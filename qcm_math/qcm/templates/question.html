@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question QCM</title>
+</head>
+<body>
+    <h1>Question {{question.id}}:</h1>
+    <p>{{ question.enonce }}</p>
+
+    <!-- Affichage du score actuel -->
+    <p>Score actuel : {{ request.session.score }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <label><input type="radio" name="reponse" value="{{ question.choix_1 }}"> {{ question.choix_1 }}</label><br>
+        <label><input type="radio" name="reponse" value="{{ question.choix_2 }}"> {{ question.choix_2 }}</label><br>
+        <label><input type="radio" name="reponse" value="{{ question.choix_3 }}"> {{ question.choix_3 }}</label><br>
+        <label><input type="radio" name="reponse" value="{{ question.choix_4 }}"> {{ question.choix_4 }}</label><br>
+        <button type="submit">Valider</button>
+    </form>
+
+    {% if result %}
+        <h2>{{ result }}</h2>  <!-- Affichage du résultat de la réponse -->
+    {% endif %}
+
+    <!-- Lien vers la question suivante ou vers la page de score si c'est la dernière question -->
+    {% if next_question %}
+        <a href="{% url 'question_view' next_question.id %}">Question suivante</a>
+    {% else %}
+        <p>Vous avez terminé !</p>
+        <a href="{% url 'score' %}">Voir votre score final</a>
+    {% endif %}
+</body>
+</html>
